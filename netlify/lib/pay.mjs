@@ -37,9 +37,11 @@ export async function settle(store, ref) {
   const pk = PACKS[rec.pack];
   if (!v.status || !d || d.status !== "success" || !pk) return { ok: false, error: "Payment not completed yet" };
   if (d.amount !== (rec.naira || pk.naira) * 100 || d.currency !== "NGN" || d.reference !== ref) return { ok: false, error: "Payment amount mismatch" };
+  try { const lk = await store.set("lock-" + ref, "1", { onlyIfNew: true }); if (lk && lk.modified === false) return { ok: true, already: true }; } catch (e) {} // only one caller may credit
   rec.done = true; await store.setJSON("pay-" + ref, rec); // mark first: never credit twice
   const ck = "credit-" + rec.id;
   const list = (await store.get(ck, { type: "json" }).catch(() => null)) || [];
+  if (list.some((c) => c.ref === ref)) return { ok: true, already: true };
   list.push({ ref, cash: pk.cash, n: pk.n });
   await store.setJSON(ck, list.slice(-50));
   const mk = "meta-" + rec.id, meta = (await store.get(mk, { type: "json" }).catch(() => null)) || { money: 0, t: 0, paid: 0, paidSeen: 0, strikes: 0, first: true };

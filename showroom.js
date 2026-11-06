@@ -90,5 +90,5 @@ var osg=saveGame;saveGame=function(){if(!IN||!OUT)return osg.apply(this,argument
 var oc=clearWorld;clearWorld=function(){if(IN)leave();return oc.apply(this,arguments)};
 ACT.showroom=function(){closeSheet();enter()};
 var od=P.deal;P.deal=function(a){var r=od(a);r.h=r.h.replace('<div class="cap">Paint</div>','<div class="row" style="margin-bottom:8px">'+'<button class="btn" data-a="showroom">🚪 Walk into the showroom</button></div><div class="cap">Paint</div>');return r};
-window.__showroom={pos:function(){return[CX,CZ,FY]},enter:enter,leave:leave,inside:function(){return IN}};
+window.__showroom={cars:function(){return cars},near:function(){return near},pos:function(){return[CX,CZ,FY]},enter:enter,leave:leave,inside:function(){return IN}};
 })();

@@ -1,0 +1,22 @@
+plugins { id 'com.android.application' }
+
+def siteUrl = (project.findProperty('siteUrl') ?: file('../../SITE_URL.txt').text).trim()
+if (siteUrl.contains('your-site') || !siteUrl.startsWith('https://')) {
+    throw new GradleException("Open SITE_URL.txt in your repo and put your real Netlify address in it, like https://mygame.netlify.app")
+}
+
+android {
+    namespace 'com.heirloom.game'
+    compileSdk 34
+    defaultConfig {
+        applicationId 'com.heirloom.game'
+        minSdk 26
+        targetSdk 34
+        versionCode 1
+        versionName '1.0'
+        buildConfigField 'String', 'SITE_URL', "\"${siteUrl}\""
+    }
+    buildFeatures { buildConfig true }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+    buildTypes { release { minifyEnabled false } }
+}

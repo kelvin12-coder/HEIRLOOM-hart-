@@ -105,7 +105,7 @@ input.txt{flex:1;min-width:0;background:rgba(255,255,255,.1);border:1px solid va
 #load{position:absolute;inset:0;z-index:50;background:radial-gradient(circle at 50% 40%,#16203a,#07090f 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px}
 #load h1{font:800 clamp(44px,12vw,92px)/1 var(--disp);letter-spacing:.18em;margin:0;text-transform:uppercase;background:linear-gradient(180deg,#fff,#ffb020);-webkit-background-clip:text;background-clip:text;color:transparent}
 #load p{margin:0;color:var(--dim);max-width:34ch}#bar{width:min(320px,70vw);height:6px;border-radius:9px;background:#ffffff1a;overflow:hidden}#bar i{display:block;height:100%;width:8%;background:var(--acc);transition:width .3s}
-#flight{position:absolute;inset:0;z-index:40;display:none;background:linear-gradient(180deg,#0b2a5a,#6aa8e8 70%,#dff0ff);overflow:hidden;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:24px}
+body.flying #hud,body.flying #ctl,body.flying #topb{display:none!important}#flight.cab{background:transparent!important}#flight.cab .cl,#flight.cab .win{display:none}#flight{position:absolute;inset:0;z-index:40;display:none;background:linear-gradient(180deg,#0b2a5a,#6aa8e8 70%,#dff0ff);overflow:hidden;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:24px}
 #flight .cl{position:absolute;background:#fff;border-radius:99px;opacity:.7;filter:blur(2px);animation:cl linear infinite}@keyframes cl{from{transform:translateX(120vw)}to{transform:translateX(-60vw)}}
 #flight .win{position:relative;width:min(320px,70vw);height:min(420px,50vh);border:14px solid #cfd6de;border-radius:46% 46% 46% 46%/34% 34% 34% 34%;box-shadow:0 0 0 6px #7f8794,inset 0 0 40px rgba(0,0,0,.4);background:linear-gradient(#143a78,#8fc2f3 70%);overflow:hidden}
 #flight .wing{position:absolute;left:-10%;bottom:12%;width:80%;height:14%;background:linear-gradient(90deg,#d8dde4,#aab2bd);transform:skewY(10deg);border-radius:6px 90% 90% 6px}
@@ -165,7 +165,7 @@ html.lh #joy{width:112px;height:112px;bottom:10px}html.lh #btns{transform:scale(
 <script src="extras.js"></script>
 <script src="house.js"></script>
 <script src="controls.js"></script>
-<script src="showroom.js"></script>
+<script src="showroom.js"></script><script src="dealer.js"></script><script src="ui2.js"></script>
 <script src="services.js"></script>
 <script src="football.js"></script>
 <script src="weapons.js"></script>

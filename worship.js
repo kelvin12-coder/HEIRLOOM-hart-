@@ -4,8 +4,7 @@
 if(typeof THREE==='undefined'||typeof ACT==='undefined'||typeof P==='undefined')return;
 var npcs=[],SV=null,mbox=null,mframe=null,mlab=null,FY=100,IN=false,KIND='',grp=null,CX=0,CZ=0,OUT=null,lights=[],boxes=null,cityCol=null,cityCirc=null,bar=null,cap=null,t0=0,lines=[],nextAt=0,li=0,SESSION=300,done=false,hw=9,hl=20;
 var prev=groundH;groundH=function(x,z){if(!IN)return prev(x,z);if(KIND==='church'){var lx=x-CX,lz=z-CZ,ax=Math.abs(lx);
-  if(ax>=hw-2.6&&ax<=hw&&lz>=11&&lz<=17)return FY+Math.max(0,Math.min(1,(17-lz)/6))*4.4;
-  if(ax>=hw-3.6&&ax<=hw&&lz>=-18&&lz<10.8&&player.y>FY+3.2)return FY+4.4}
+  }
   return FY};
 function el(t,css,h){var e=document.createElement(t);if(css)e.style.cssText=css;if(h!==undefined)e.innerHTML=h;return e}
 function M(c,r,m,o){var p={color:new THREE.Color(c),roughness:r===undefined?.8:r,metalness:m||0};if(o)Object.assign(p,o);var mm=new THREE.MeshStandardMaterial(p);return window.SKIN&&typeof c==='string'?SKIN.auto(mm,c):mm}
@@ -62,7 +61,7 @@ var SONGS={church:[['🎶 Praise & worship','smilemercy2/adullam-wwwsix9jacom','
   mosque:[['🕌 Nasheed','islamic-songs-2/murshid-ya-muhammed','Murshid Ya Muhammad','nasheed'],['🤲 Prayer — Ayatul Kursi','muslim-umma/ayatul-kur-si-al-sudais','Ayatul Kursi (Al-Sudais)','prayer'],['🕌 Nasheed','islamic-songs-2/nabi-oh-nabi','Nabi Oh Nabi','nasheed']]};
 var SONGSEC=230;
 function rr(a,b){return a+Math.random()*(b-a)}
-function mkn(x,y,z,ry,look,st){var l=Object.assign(randLook(!!look.female),look);var H=makeHuman(l);H.root.position.set(x,y,z);H.root.rotation.y=ry;grp.add(H.root);var n={H:H,st:st||'idle',x:x,y:y,z:z,ry:ry,sp:0,role:look.role||'',fy:y};npcs.push(n);return n}
+function mkn(x,y,z,ry,look,st){return{H:{a:{},root:new THREE.Object3D()},gone:true,leaving:1,role:'none',st:'idle',root:new THREE.Object3D()};var l=Object.assign(randLook(!!look.female),look);var H=makeHuman(l);H.root.position.set(x,y,z);H.root.rotation.y=ry;grp.add(H.root);var n={H:H,st:st||'idle',x:x,y:y,z:z,ry:ry,sp:0,role:look.role||'',fy:y};npcs.push(n);return n}
 function emo(n,name,secs){n.H.a.emo=name?{n:name,t0:Date.now(),end:Date.now()+(secs||60)*1000}:null}
 function cross(g,x,y,z,h,col){var m=M(col||'#d9a520',.25,.8);B(g,.35*h,h,.35*h,x,y+h/2,z,null,{mat:m,ns:1});B(g,h*.7,.3*h,.35*h,x,y+h*.68,z,null,{mat:m,ns:1})}
 function crescent(g,x,y,z,r){var a=new THREE.Mesh(new THREE.TorusGeometry(r,r*.17,8,26,4.6),M('#d9a520',.25,.8));a.position.set(x,y,z);a.rotation.z=2.2;g.add(a);var st=new THREE.Mesh(new THREE.OctahedronGeometry(r*.28),glow(0xffe08a));st.position.set(x+r*.3,y+r*.15,z);g.add(st)}
@@ -71,14 +70,7 @@ function extras(g,kind){var church=kind==='church';
     // signs + big cross above the altar and over the entrance
     cross(g,0,FY+7.5,-hl+.55,4.8);cross(g,0,FY+H_()-3.3,hl-.3,2.4);
     var sg=labelSprite('✝️ HEIRLOOM CHURCH','#2a1a08','rgba(250,225,150,.96)');sg.position.set(0,FY+10.2,-hl+1.2);sg.scale.multiplyScalar(3.4);g.add(sg);
-    // upstairs gallery both sides + stairs by the door
-    [-1,1].forEach(function(sd){
-      B(g,3.6,.3,28.8,sd*(hw-1.8),FY+4.25,-3.6,'#7a5a3a');B(g,.12,1.0,28.8,sd*(hw-3.55),FY+4.95,-3.6,'#4a2f1b',{ns:1});
-      for(var z=-16;z<=8;z+=8)B(g,.5,4.1,.5,sd*(hw-3.4),FY+2.05,z,'#e7ddc9');
-      for(var i=0;i<12;i++)B(g,2.4,(i+1)*.367,.5,sd*(hw-1.4),FY+(i+1)*.367/2,16.75-i*.5,'#8a6a46');
-      B(g,.1,1,6,sd*(hw-2.65),FY+3.2,14,'#4a2f1b',{ns:1}).rotation.x=-.64;
-      for(var k=0;k<4;k++)B(g,3,.08,1,sd*(hw-1.8),FY+4.7,-14+k*5.4,'#6a4528');   // balcony benches
-      var gl=labelSprite('⬆ Gallery','#fff','rgba(40,30,20,.85)');gl.position.set(sd*(hw-1.4),FY+5.4,17);g.add(gl)});
+
     // preacher, choir, congregation
     var p=mkn(0,FY+.7,-hl+4.4,0,{female:false,tc:'#f2f2f2',ts:2,bc:'#151515',build:1.1,h:1.03,hat:0,role:'preacher'},'idle');
     var pl=labelSprite('Pastor','#fff','rgba(60,20,20,.9)');pl.position.set(0,FY+3.1,-hl+4.4);g.add(pl);
@@ -95,7 +87,7 @@ function extras(g,kind){var church=kind==='church';
 function H_(){return KIND==='church'?13:11}
 function mbShow(url,label){if(!mbox){mbox=el('div','position:fixed;left:50%;top:calc(46px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:36;width:min(330px,92vw);padding:6px 8px;border-radius:12px;background:rgba(10,12,20,.92);border:2px solid #ffb020;color:#fff;font:800 12px system-ui;text-align:center');
   mlab=el('div','margin-bottom:4px');mframe=el('iframe','width:100%;height:96px;border:0;border-radius:8px;display:block');mframe.allow='autoplay; encrypted-media';mbox.appendChild(mlab);mbox.appendChild(mframe);mbox.id='wmusic';document.body.appendChild(mbox)}
-  mbox.style.display='block';mbox.style.visibility='visible';mlab.innerHTML=label;if(mframe.dataset.u!==url){mframe.dataset.u=url;mframe.src=url}}
+  mbox.style.display='block';mbox.style.visibility='visible';mbox.style.left='-500px';mbox.style.opacity='.02';mbox.style.pointerEvents='none';mbox.style.transform='none';mlab.innerHTML=label;if(mframe.dataset.u!==url){mframe.dataset.u=url;mframe.src=url}}
 function mbHide(){if(mbox){mbox.style.display='none';if(mframe){mframe.src='about:blank';mframe.dataset.u=''}}}
 function embed(path){return'https://audiomack.com/embed/song/'+path+'?background=1&color=ffffff&autoplay=1'}
 function svcStart(kind){SV={kind:kind,i:-1,t0:0,end:false,leaving:0,pray:0,join:false};window.__worshipIn=true;svcSong(0)}
