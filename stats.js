@@ -83,9 +83,13 @@ var DEFAULT_MUSIC='https://youtu.be/kbAxrwfLSsE https://youtu.be/WWkF5KUoTA4 htt
   function prevSong(){if(!hist.length)return;fwd.push(snap());apply(hist.pop())}
   roll();
   if(ST&&!ST.__mx){ST.__mx=1;ST.unshift(M)}
-  function amPlace(){if(!amBox)return;if(amLbl)amLbl.style.display='none';amBox.style.cssText='position:fixed;left:-400px;top:0;width:200px;opacity:.02;pointer-events:none;z-index:-1'}
+  function amPlace(){if(!amBox)return;
+    var need=!window.__amTapped&&(Date.now()-(window.__amT0||Date.now())<30000);
+    if(need||amShown()){if(amLbl)amLbl.style.display=window.__amTapped?'none':'block';amBox.style.cssText='position:fixed;left:50%;top:64px;transform:translateX(-50%);width:250px;z-index:60;background:rgba(10,13,22,.92);border:2px solid #ffb020;border-radius:12px;padding:6px'}
+    else{if(amLbl)amLbl.style.display='none';amBox.style.cssText='position:fixed;left:-400px;top:0;width:200px;opacity:.02;pointer-events:none;z-index:-1'}}
+  setInterval(function(){try{amPlace()}catch(e){}},1500);
   function amShow(){
-    if(!amBox){amBox=document.createElement('div');amBox.id='ambox';amFrame=document.createElement('iframe');amFrame.allow='autoplay; encrypted-media';amFrame.setAttribute('aria-hidden','true');amFrame.style.cssText='width:100%;border:0;border-radius:8px;display:block';amLbl=document.createElement('div');amLbl.style.cssText='font:800 13px system-ui,sans-serif;color:#ffb020;text-align:center;padding:2px 0 6px';amLbl.textContent='👇 Tap ▶ once to start music';amBox.appendChild(amLbl);amBox.appendChild(amFrame);document.body.appendChild(amBox);addEventListener('blur',function(){setTimeout(function(){if(document.activeElement===amFrame){LS('hl-amtap','1');amPlace()}},50)})}
+    if(!amBox){amBox=document.createElement('div');amBox.id='ambox';amFrame=document.createElement('iframe');amFrame.allow='autoplay; encrypted-media';amFrame.setAttribute('aria-hidden','true');amFrame.style.cssText='width:100%;border:0;border-radius:8px;display:block';amLbl=document.createElement('div');amLbl.style.cssText='font:800 13px system-ui,sans-serif;color:#ffb020;text-align:center;padding:2px 0 6px';amLbl.textContent='👇 Tap ▶ once to start music';amBox.appendChild(amLbl);amBox.appendChild(amFrame);document.body.appendChild(amBox);addEventListener('blur',function(){setTimeout(function(){if(document.activeElement===amFrame){window.__amTapped=true;LS('hl-amtap','1');setTimeout(amPlace,1200)}},50)})}
     amPlace();if(M.amUrl&&amKey!==M.amUrl){amKey=M.amUrl;window.__amT0=Date.now();amFrame.src=M.amUrl;if(!window.__amTip){window.__amTip=1;try{toast('🎵 Tap ▶ once on the small player (top-left) to start the song')}catch(e){}}}}
   function amHide(){if(amBox&&amKey){amFrame.src='about:blank';amKey=''}}
   /* radio button in the car: on the Mix station it changes the song instead of changing station */
